@@ -23,8 +23,8 @@ class IndexController extends Zend_Controller_Action
                 $data = array();
                 $t = new Application_Model_Tweets();
                 foreach ($favorites as $f) {
-                    $data['user_id'] = $f->user->id;
                     $data['tweet_id'] = $f->id;
+                    $data['user_id'] = $f->user->id;
                     $data['profile_image_url'] = $f->user->profile_image_url;
                     $data['text'] = $f->text;
                     $data['created_at'] =  strtotime($f->created_at);
@@ -35,6 +35,7 @@ class IndexController extends Zend_Controller_Action
                 }
             }
         }
+        $this->_redirect('index');
     }
 
 
@@ -47,35 +48,22 @@ class IndexController extends Zend_Controller_Action
         // Get the model instance from the action helper
         $twitter = $this->_helper->twitter(); /* @var $twitter Application_Model_Twitter */
         if ($twitter->isLoggedIn()) {
+            // User update
+            $friends = $twitter->getService()->user->friends();
+            foreach ($friends as $f) {
+                $ids[] = (string) $f->id;
+            }
+            $u = new Application_Model_Users();
+            $userData['user_id'] =  $twitter->getUserId();
+            $userData['friends'] =  json_encode($ids);
+            $userData['last_login_at'] =  new Zend_Db_Expr('NOW()');
+            $u->insert($userData);
             // We only care abotu setting up the home page for posting a tweet
             // if we are logged in.
             $t = new Application_Model_Tweets();
             $select  = $t->select()->order('created_at DESC')->limit(50);
             $this->view->favorites = $t->fetchAll($select);
             $this->view->name = $twitter->getName();
-            // Form to do tweeting with position
-            $form = new Application_Form_Tweet();
-            $form->setAction($this->view->url(array(), null, true));
-            $this->view->form = $form;
-            if ($this->getRequest()->isPost()) {
-                if ($form->isValid($this->getRequest()->getPost())) {
-                    $data = $form->getValues();
-                    $tweet = $data['tweet'];                    
-                    try {
-                        $result = $twitter->send($tweet);
-                        if ($result->isSuccess()) {
-                            $message = 'Tweet sent';
-                        } else {
-                            $message = 'Failed to send tweet.';
-                        }
-                    } catch (Exception $e){
-                        $message = 'Failed to send tweet. Reported error: ' . $e->getMessage();
-                    }
-
-                    $this->_helper->flashMessenger->addMessage($message);
-                    $this->_helper->redirector->gotoRouteAndExit();
-                }
-            }
         }
         
         $this->view->messages = $this->_helper->flashMessenger->getMessages();
