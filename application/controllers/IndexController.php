@@ -5,7 +5,38 @@ class IndexController extends Zend_Controller_Action
 
     public function init()
     {
+
     }
+
+    public function updateAction()
+    {
+        $twitter = $this->_helper->twitter(); /* @var $twitter Application_Model_Twitter */
+        if ($twitter->isLoggedIn()) {
+            $friends = $twitter->getService()->user->friends();
+            foreach ($friends as $f) {
+                $ids[] = (string) $f->id;
+            }
+            $this->view->friends = $friends;
+
+            foreach ($ids as $id) {
+                $favorites = $twitter->getService()->favorite->favorites(array('id'=>$id));
+                $data = array();
+                $t = new Application_Model_Tweets();
+                foreach ($favorites as $f) {
+                    $data['user_id'] = $f->user->id;
+                    $data['tweet_id'] = $f->id;
+                    $data['profile_image_url'] = $f->user->profile_image_url;
+                    $data['text'] = $f->text;
+                    $data['created_at'] =  strtotime($f->created_at);
+                    $data['inserted_at'] =  new Zend_Db_Expr('NOW()');
+                    $data['name'] = $f->user->name;
+                    $data['screen_name'] = $f->user->screen_name;
+                    $t->insert($data);
+                }
+            }
+        }
+    }
+
 
     public function indexAction()
     {
@@ -18,17 +49,9 @@ class IndexController extends Zend_Controller_Action
         if ($twitter->isLoggedIn()) {
             // We only care abotu setting up the home page for posting a tweet
             // if we are logged in.
-
-            $friends = $twitter->getService()->user->friends();
-            foreach ($friends as $f) {
-                $ids[] = (string) $f->id;
-            }
-            $this->view->friends = $friends;
-
-//            foreach ($ids as $id) {
-//                $favorites[] = $twitter->getService()->favorite->favorites(array('id'=>$id));
-//            }
-            $this->view->favorites = $twitter->getService()->favorite->favorites();
+            $t = new Application_Model_Tweets();
+            $select  = $t->select()->order('created_at DESC')->limit(50);
+            $this->view->favorites = $t->fetchAll($select);
             $this->view->name = $twitter->getName();
             // Form to do tweeting with position
             $form = new Application_Form_Tweet();
