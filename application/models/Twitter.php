@@ -68,6 +68,21 @@ class Application_Model_Twitter
         }
         return $name;
     }
+    /**
+     * Retrive user's id
+     * @return string
+     */
+    public function getUserId()
+    {
+        try {
+            $response = $this->getService()->account->verifyCredentials();
+            $id = (string) $response->id;
+        } catch (Zend_Exception $e) {
+            return '';
+        }
+        return $id;
+    }
+
     
     /**
      * Send a message with position
