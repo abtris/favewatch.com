@@ -1,3 +1,4 @@
+<?php if ($this->messages) : ?>
 <h2>Your Favorites</h2>
 <ul>
 <?php
@@ -14,15 +15,14 @@ foreach ($this->favorites as $fav) {
 <?php } ?>
 </ul>
 
-<?php if ($this->form) : ?>
+
 <h1><?php echo $this->escape($this->title); ?></h1>
 
 
-<p id="loggedin">Logged in as <a target="_blank" href="http://www.twitter.com/<?php echo $this->escape($this->name); ?>"><?php echo $this->escape($this->name); ?></a>. <a href="<?php echo $this->url(array('action'=>'logout'));?>">Logout</a></p>
+<p id="loggedin">Logged in as <a target="_blank" href="http://www.twitter.com/<?php echo $this->escape($this->name); ?>"><?php echo $this->escape($this->name); ?></a>. <a href="<?php echo $this->url(array('action'=>'logout'));?>">Logout</a> | <a href="<?php echo $this->url(array('action'=>'update'));?>">Update</a></p>
 
 <?php else : // Not logged in ?>
-<br/>You must log into twitter first as Tweets doesn't want to know your username or password!</p>
+<br/>You must log into twitter first as FaveWatch doesn't want to know your username or password!</p>
 <p><a href="<?php echo $this->url(array('action'=>'login'));?>"><img src="<?php echo $this->baseUrl() ?>/img/Sign-in-with-Twitter-darker.png" /></a></p>
 
 <?php endif;?>
-
