@@ -82,8 +82,6 @@ class Application_Model_Twitter
         }
         return $id;
     }
-
-    
     /**
      * Send a message with position
      *
