@@ -1,4 +1,4 @@
-<h2>Favorites</h2>
+<h2>Your Favorites</h2>
 <ul>
 <?php
 foreach ($this->favorites as $fav) {
@@ -16,21 +16,11 @@ foreach ($this->favorites as $fav) {
 <?php if ($this->form) : ?>
 <h1><?php echo $this->escape($this->title); ?></h1>
 
-<?php
-if ($this->messages) {
-   $messages = implode("<br />", $this->messages);
-   $class = "info";
-   if(strstr($messages, 'error')) {
-       $class = "error";
-   }
-   echo '<div class="'. $class.'">'.$messages. '</div>';
-}
-
-?>
-
-<?php echo $this->form; ?>
-
-
+<ul>
+<?php foreach ($this->friends as $f) { ?>
+    <li><img src="<?php echo $this->escape($f->profile_image_url); ?>"><?php echo $f->id; ?></li>
+<?php } ?>
+</ul>
 
 <p id="loggedin">Logged in as <a target="_blank" href="http://www.twitter.com/<?php echo $this->escape($this->name); ?>"><?php echo $this->escape($this->name); ?></a>. <a href="<?php echo $this->url(array('action'=>'logout'));?>">Logout</a></p>
 

@@ -9,8 +9,8 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $this->view->headTitle('Send Tweet');
-        $this->view->title = 'Send Tweet';
+        $this->view->headTitle('Favorites');
+        $this->view->title = 'Favorites';
         $fc = $this->getFrontController();
 
         // Get the model instance from the action helper
@@ -19,7 +19,15 @@ class IndexController extends Zend_Controller_Action
             // We only care abotu setting up the home page for posting a tweet
             // if we are logged in.
 
-            // var_dump($twitter->getService()->user->friends());
+            $friends = $twitter->getService()->user->friends();
+            foreach ($friends as $f) {
+                $ids[] = (string) $f->id;
+            }
+            $this->view->friends = $friends;
+
+//            foreach ($ids as $id) {
+//                $favorites[] = $twitter->getService()->favorite->favorites(array('id'=>$id));
+//            }
             $this->view->favorites = $twitter->getService()->favorite->favorites();
             $this->view->name = $twitter->getName();
             // Form to do tweeting with position
