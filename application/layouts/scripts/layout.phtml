@@ -18,19 +18,12 @@ $this->headLink()->appendStylesheet($baseUrl.'/css/site.css', 'screen,print');
 <?php echo $this->headTitle()->setIndent(4);?> 
 <?php echo $this->headLink()->setIndent(4); ?> 
 <?php echo $this->headStyle()->setIndent(4); ?>
-<?php echo $this->headScript()->setIndent(4); ?> 
+<?php echo $this->headScript()->setIndent(4); ?>
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.min.js"></script>
 </head>
-<body onload="initialize()">
-<div id="header">
-    <a href="<?php echo $this->url(array(), null, true); ?>" title="Link to homepage" name="top" id="brand">
-        FaveWatch.com
-    </a>
-</div>
+<body>
 <div id="content">
     <?php echo $this->layout()->content; ?>
-</div>
-<div id="footer">
-<?php echo $this->footer(); ?>
 </div>
 <?php echo $this->googleAnalytics(); ?>
 </body>

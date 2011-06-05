@@ -1,15 +1,16 @@
 <?php
-
+/**
+ *
+ */
 class IndexController extends Zend_Controller_Action
 {
-
-    public function init()
-    {
-
-    }
-
+    /**
+     * @todo Ajax version ???
+     * @return void
+     */
     public function updateAction()
     {
+        $this->_helper->layout->disableLayout();
         $twitter = $this->_helper->twitter(); /* @var $twitter Application_Model_Twitter */
         if ($twitter->isLoggedIn()) {
             $friends = $twitter->getService()->user->friends();
@@ -35,14 +36,17 @@ class IndexController extends Zend_Controller_Action
                 }
             }
         }
-        $this->_redirect('index');
+        if (!$this->_request->isXmlHttpRequest()) {
+            $this->_redirect('index/index');
+        }
     }
-
-
+    /**
+     * @return void
+     */
     public function indexAction()
     {
-        $this->view->headTitle('Favorites');
-        $this->view->title = 'Favorites';
+        $this->view->headTitle('Homepage');
+        $this->view->title = 'FaveWatch.com';
         $fc = $this->getFrontController();
 
         // Get the model instance from the action helper

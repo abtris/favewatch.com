@@ -1,25 +1,38 @@
+<h1><?php echo $this->escape($this->title); ?></h1>
+<script type="text/javascript">
+    $('#update').click(function() {
+        $.ajax({
+          type: "GET",
+          url: "<?php echo $this->baseUrl(); ?>/index/update",
+          success: function(){
+            $(this).addClass("done");
+          }
+        });
+    });
+</script>
 <?php if ($this->favorites) : ?>
-<h2>Your Favorites</h2>
-<ul>
+<h2>All Friends Favorites</h2>
+<div class="tweet">
+<div class="query">
+<ul class="tweet_list">
 <?php
-
+$c = false;
 foreach ($this->favorites as $fav) {
 ?>
-    <li><a href="http://twitter.com/<?php echo $fav->screen_name; ?>">
+    <li <?php if ($c= !$c) echo "class='tweet_even'"; else echo "class='tweet_odd'"; ?>><a class="tweet_avatar" title="<?php echo $this->escape($fav->name); ?>" href="http://twitter.com/<?php echo $fav->screen_name; ?>">
         <img src="<?php echo $this->escape($fav->profile_image_url); ?>">
-        <?php echo $this->escape($fav->name); ?></a>
-        <?php echo Application_Model_Twitter::clickable($fav->text); ?>
-        <small>at <?php echo date("j.n.Y H:i", $fav->created_at); ?></small>
+        </a>
+        <span class="tweet_text"><?php echo Application_Model_Twitter::clickable($fav->text); ?></span>
+        <span class="tweet_time">at <?php echo date("j.n.Y H:i", $fav->created_at); ?></span>
     </li>
 
 <?php } ?>
 </ul>
+</div>
+</div>
 
 
-<h1><?php echo $this->escape($this->title); ?></h1>
-
-
-<p id="loggedin">Logged in as <a target="_blank" href="http://www.twitter.com/<?php echo $this->escape($this->name); ?>"><?php echo $this->escape($this->name); ?></a>. <a href="<?php echo $this->url(array('action'=>'logout'));?>">Logout</a> | <a href="<?php echo $this->url(array('action'=>'update'));?>">Update</a></p>
+<p id="loggedin">Logged in as <a target="_blank" href="http://www.twitter.com/<?php echo $this->escape($this->name); ?>"><?php echo $this->escape($this->name); ?></a>. <a href="<?php echo $this->url(array('action'=>'logout'));?>">Logout</a> | <a href="<?php echo $this->url(array("controller"=>"index", "action"=>"update")); ?>">Update</a></p>
 
 <?php else : // Not logged in ?>
 <br/>You must log into twitter first as FaveWatch doesn't want to know your username or password!</p>
