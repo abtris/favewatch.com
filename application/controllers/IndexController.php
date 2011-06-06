@@ -23,6 +23,7 @@ class IndexController extends Zend_Controller_Action
                 $favorites = $twitter->getService()->favorite->favorites(array('id'=>$id));
                 $data = array();
                 $t = new Application_Model_Tweets();
+                $ft = new Application_Model_FriendsTweets();
                 foreach ($favorites as $f) {
                     $data['tweet_id'] = $f->id;
                     $data['user_id'] = $f->user->id;
@@ -33,6 +34,7 @@ class IndexController extends Zend_Controller_Action
                     $data['name'] = $f->user->name;
                     $data['screen_name'] = $f->user->screen_name;
                     $t->insert($data);
+                    $ft->insert(array('friend_id'=>$id, 'tweet_id'=> $f->id));
                 }
             }
         }
@@ -55,11 +57,13 @@ class IndexController extends Zend_Controller_Action
             // User update
             $friends = $twitter->getService()->user->friends();
             foreach ($friends as $f) {
-                $ids[] = (string) $f->id;
+                $friend = new Application_Model_Friends();
+                $fData['friend_id'] = (string) $f->id;
+                $fData['user_id'] = $twitter->getUserId();
+                $friend->insert($fData);
             }
             $u = new Application_Model_Users();
             $userData['user_id'] =  $twitter->getUserId();
-            $userData['friends'] =  json_encode($ids);
             $userData['last_login_at'] =  new Zend_Db_Expr('NOW()');
             $u->insert($userData);
             // We only care abotu setting up the home page for posting a tweet
@@ -69,7 +73,7 @@ class IndexController extends Zend_Controller_Action
             $this->view->favorites = $t->fetchAll($select);
             $this->view->name = $twitter->getName();
         }
-        
+
         $this->view->messages = $this->_helper->flashMessenger->getMessages();
     }
 
