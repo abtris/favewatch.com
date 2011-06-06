@@ -26,10 +26,9 @@ foreach ($this->favorites as $fav) {
         </a>
         <?php echo $this->escape($fav['name']); ?>:
         <span class="tweet_text"><?php echo Application_Model_Twitter::clickable($fav['text']); ?></span>
-        <span class="tweet_time">at <?php echo date("j.n.Y H:i", $fav['created_at']); ?></span>
         <br />
-        <span style="float: right">
-        Favorites by <a class="tweet_avatar_small" title="" href="http://twitter.com/<?php echo $fav['fscn']; ?>">
+        <span style="float: right; font-size: 80%;">
+        <?php echo date("j.n.Y H:i", $fav['created_at']); ?>  - Favorites by <a class="tweet_avatar_small" title="" href="http://twitter.com/<?php echo $fav['fscn']; ?>">
         <img src="<?php echo $this->escape($fav['fpiu']); ?>">
         </a>
         </span>
