@@ -11,9 +11,6 @@ class Application_Model_Friends extends Zend_Db_Table_Abstract
         if (!$rows[0]['friend_id']==$data['friend_id'] && !$rows[0]['user_id']==$data['user_id']) {
             $data['last_update'] = new Zend_Db_Expr('NOW()');
             parent::insert($data);
-        } else {
-            $data['last_update'] = new Zend_Db_Expr('NOW()');
-            parent::update($data, array('user_id'=> $data['user_id'], 'friend_id' => $data['friend_id']));
         }
     }
 }
