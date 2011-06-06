@@ -55,7 +55,6 @@ class IndexController extends Zend_Controller_Action
     {
         $this->view->headTitle('Homepage');
         $this->view->title = 'FaveWatch.com';
-        $fc = $this->getFrontController();
 
         // Get the model instance from the action helper
         $twitter = $this->_helper->twitter(); /* @var $twitter Application_Model_Twitter */
@@ -72,7 +71,6 @@ class IndexController extends Zend_Controller_Action
             $this->view->favorites = $favorites;
             $this->view->name = $twitter->getName();
         }
-
         $this->view->messages = $this->_helper->flashMessenger->getMessages();
     }
 

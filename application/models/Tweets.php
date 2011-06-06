@@ -22,7 +22,7 @@ class Application_Model_Tweets extends Zend_Db_Table_Abstract
     {
         $rows = array();
         if ($id>0) {
-        $q = "select friends.friend_id, friends.screen_name as fscn, tweets.*
+        $q = "select friends.friend_id, friends.screen_name as fscn, friends.profile_image_url as fpiu, tweets.*
               from friends join friends_tweets join tweets
               where friends.user_id=$id and friends.friend_id = friends_tweets.friend_id and friends_tweets.tweet_id = tweets.tweet_id
               order by tweets.tweet_id DESC
