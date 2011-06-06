@@ -14,7 +14,9 @@ class IndexController extends Zend_Controller_Action
         $twitter = $this->_helper->twitter(); /* @var $twitter Application_Model_Twitter */
         if ($twitter->isLoggedIn()) {
             $friends = $twitter->getService()->user->friends();
+            $row = 0;
             foreach ($friends as $f) {
+                if ($row<20) {
                 $ids[] = (string) $f->id;
                 $friend = new Application_Model_Friends();
                 $fData['friend_id'] = (string) $f->id;
@@ -23,6 +25,8 @@ class IndexController extends Zend_Controller_Action
                 $fData['url'] = (string) $f->url;
                 $fData['user_id'] = $twitter->getUserId();
                 $friend->insert($fData);
+                }
+                $row++;
             }
 
             foreach ($ids as $id) {
