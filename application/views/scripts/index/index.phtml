@@ -10,8 +10,10 @@
         });
     });
 </script>
-<?php if ($this->favorites) : ?>
+<?php
+if (isset($this->favorites)) : ?>
 <h2>All Friends Favorites</h2>
+<?php if ($this->favorites) { ?>
 <div class="tweet">
 <div class="query">
 <ul class="tweet_list">
@@ -31,7 +33,11 @@ foreach ($this->favorites as $fav) {
 </ul>
 </div>
 </div>
+<?php } else { ?>
 
+No records, please use <a href="<?php echo $this->url(array("controller"=>"index", "action"=>"update")); ?>">update</a> to take some records.
+
+<?php } ?>
 
 <p id="loggedin">Logged in as <a target="_blank" href="http://www.twitter.com/<?php echo $this->escape($this->name); ?>"><?php echo $this->escape($this->name); ?></a>. <a href="<?php echo $this->url(array('action'=>'logout'));?>">Logout</a> | <a href="<?php echo $this->url(array("controller"=>"index", "action"=>"update")); ?>">Update</a></p>
 

@@ -20,6 +20,8 @@ class Application_Model_Tweets extends Zend_Db_Table_Abstract
      */
     public function getTweets($id, $limit = 30)
     {
+        $rows = array();
+        if ($id>0) {
         $q = "select friends.friend_id, friends.screen_name as fscn, tweets.*
               from friends join friends_tweets join tweets
               where friends.user_id=$id and friends.friend_id = friends_tweets.friend_id and friends_tweets.tweet_id = tweets.tweet_id
@@ -27,6 +29,7 @@ class Application_Model_Tweets extends Zend_Db_Table_Abstract
               limit $limit";
         $stmt = $this->_db->query($q);
         $rows = $stmt->fetchAll();
+        }
         return $rows;
     }
 
