@@ -24,13 +24,12 @@ foreach ($this->favorites as $fav) {
     <li <?php if ($c= !$c) echo "class='tweet_even'"; else echo "class='tweet_odd'"; ?>><a class="tweet_avatar" title="" href="http://twitter.com/<?php echo $fav['screen_name']; ?>">
         <img src="<?php echo $this->escape($fav['profile_image_url']); ?>">
         </a>
-        <?php echo $this->escape($fav['name']); ?>:
-        <span class="tweet_text"><?php echo Application_Model_Twitter::clickable($fav['text']); ?></span>
-        <br />
+        <span style="font-size: 80%;">
+        <strong><?php echo $this->escape($fav['name']); ?></strong> <span class="icon"><img src="<?php echo $this->baseUrl() ?>/img/1307431206_star-24.png" alt="Favorite by"/> by <a title="" href="http://twitter.com/<?php echo $fav['fscn']; ?>"><?php echo $fav['fscn']; ?></a></span>
+        </span><br />
+        <span class="tweet_text"><?php echo Application_Model_Twitter::clickable($fav['text']); ?></span><br />
         <span style="float: right; font-size: 80%;">
-        <?php echo date("j.n.Y H:i", $fav['created_at']); ?>  - Favorites by <a class="tweet_avatar_small" title="" href="http://twitter.com/<?php echo $fav['fscn']; ?>">
-        <img src="<?php echo $this->escape($fav['fpiu']); ?>">
-        </a>
+        <a href="http://twitter.com/#!/<?php echo $fav['screen_name']; ?>/status/<?php echo $fav['tweet_id']; ?>"><?php echo date("j.n.Y H:i", $fav['created_at']); ?></a>
         </span>
     </li>
 <?php } ?>
