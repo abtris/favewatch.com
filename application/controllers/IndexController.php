@@ -14,21 +14,8 @@ class IndexController extends Zend_Controller_Action
         $twitter = $this->_helper->twitter(); /* @var $twitter Application_Model_Twitter */
         if ($twitter->isLoggedIn()) {
             $friends = $twitter->getService()->user->friends();
-            $row = 0;
-            foreach ($friends as $f) {
-                if ($row<20) {
-                $ids[] = (string) $f->id;
-                $friend = new Application_Model_Friends();
-                $fData['friend_id'] = (string) $f->id;
-                $fData['screen_name'] = (string) $f->screen_name;
-                $fData['profile_image_url'] = (string) $f->profile_image_url;
-                $fData['url'] = (string) $f->url;
-                $fData['user_id'] = $twitter->getUserId();
-                $friend->insert($fData);
-                }
-                $row++;
-            }
-
+            $friend = new Application_Model_Friends();
+            $ids = $friend->updateFriends($friends, $twitter->getUserId());
             foreach ($ids as $id) {
                 $favorites = $twitter->getService()->favorite->favorites(array('id'=>$id));
                 $data = array();
