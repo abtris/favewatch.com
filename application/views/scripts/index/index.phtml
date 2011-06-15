@@ -25,7 +25,7 @@ foreach ($this->favorites as $fav) {
         <img src="<?php echo $this->escape($fav['profile_image_url']); ?>">
         </a>
         <span style="font-size: 80%;">
-        <strong><?php echo $this->escape($fav['name']); ?></strong> <span class="icon"><img src="<?php echo $this->baseUrl() ?>/img/1307431206_star-24.png" alt="Favorite by"/> by <a title="" href="http://twitter.com/<?php echo $fav['fscn']; ?>"><?php echo $fav['fscn']; ?></a></span>
+        <strong><?php echo $this->escape($fav['name']); ?></strong> <span class="icon"><img src="<?php echo $this->baseUrl();?>/img/star.png" alt="Favorite by"/> by <a title="" href="http://twitter.com/<?php echo $fav['fscn']; ?>"><?php echo $fav['fscn']; ?></a></span>
         </span><br />
         <span class="tweet_text"><?php echo Application_Model_Twitter::clickable($fav['text']); ?></span><br />
         <span style="float: right; font-size: 80%;">
